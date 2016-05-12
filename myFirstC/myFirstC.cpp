@@ -2,70 +2,48 @@
 //
 
 #include "stdafx.h"
-#include <ctype.h>
-float get_float(void);
-char get_first(void);
+double power(double n, int p);  /* ANSI prototype */
 
 int main(void)
 {
-	char select;
-	float num1, num2;
-	while (true)
+	double x, xpow;
+	int n;
+
+	printf("Enter a number and the integer power");
+	printf(" to which\nthe number will be raised. Enter q");
+	printf(" to quit.\n");
+	while (scanf_s("%lf%d", &x, &n) == 2)
 	{
-		printf("Enter the operation of your choice:\n");
-		printf("a.add       s.subtract:\n");
-		printf("m.multiply  d.divide\n");
-		printf("q.quit\n");
-		select = get_first();
-		if (select != 'a'&&select != 's'&&select != 'm'&&select != 'd')
-		{
-			printf("Bye.\n");
-			break;
-		}
-		printf("Enter first number:");
-		num1 = get_float();
-		printf("Enter second number:");
-		num2 = get_float();
-		while (select == 'd' && num2 == 0)
-		{
-			printf("Enter a number other than 0:");
-			num2 = get_float();
-		}
-		switch (select)
-		{
-		case'a': printf("%.2f + %.2f = %.2f\n", num1, num2, num1 + num2); break;
-		case's': printf("%.2f - %.2f = %.2f\n", num1, num2, num1 - num2); break;
-		case'm': printf("%.2f * %.2f = %.2f\n", num1, num2, num1 * num2); break;
-		case'd': printf("%.2f / %.2f = %.2f\n", num1, num2, num1 / num2); break;
-		default: break;
-		}
+		xpow = power(x, n);       /* function call           */
+		printf("%.3g to the power %d is %.5g\n", x, n, xpow);
+		printf("Enter next pair of numbers or q to quit.\n");
 	}
+	printf("Hope you enjoyed this power trip -- bye!\n");
+
 	while (true);
 	return 0;
 }
 
-float get_float(void) //得到一个合适的浮点数，滤除非法数
+double power(double n, int p)
 {
-	float num;
-	char str[40];
-	//char ch;
+	int i;
+	double xpow = 1;
 
-	while (scanf_s("%f", &num) != 1)
+	if (n == 0 && p != 0)
+		return 0;
+	if (p == 0)
+		return 1;
+
+
+	else if (p > 0)
 	{
-		gets_s(str,40);
-		printf("%s is not a number.\n", str);
-		/*while ((ch = getchar()) != '\n')
-			putchar(ch);
-		printf(" is not a number.\n");*/
-		printf("Please enter a numbe,such as 2.5, -1.78E8, or 3:");
+		for (i = 0; i < p; i++)
+			xpow *= n;
+		return xpow;
 	}
-	while (getchar() != '\n');
-	return num;
-}
-char get_first(void) //得到字符串中的第一个字符，滤除其他字符
-{
-	int ch;
-	while (isspace(ch = getchar()));
-	while (getchar() != '\n');
-	return ch;
+	else
+	{
+		xpow = power(n,-p);
+		return 1 / xpow;
+	}
 }
