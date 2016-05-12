@@ -2,48 +2,38 @@
 //
 
 #include "stdafx.h"
-double power(double n, int p);  /* ANSI prototype */
+void to_base_n(unsigned long n,int base);
 
 int main(void)
 {
-	double x, xpow;
-	int n;
+	unsigned long number;
+	int m;
 
-	printf("Enter a number and the integer power");
-	printf(" to which\nthe number will be raised. Enter q");
-	printf(" to quit.\n");
-	while (scanf_s("%lf%d", &x, &n) == 2)
+	printf("Enter an integer (q to quit): \n");
+	while (scanf_s("%lu", &number) == 1 )
 	{
-		xpow = power(x, n);       /* function call           */
-		printf("%.3g to the power %d is %.5g\n", x, n, xpow);
-		printf("Enter next pair of numbers or q to quit.\n");
+		printf("Enter another integer: \n");
+		scanf_s("%d", &m);
+		printf("Binary equivalent: ");
+		to_base_n(number, m);
+		putchar('\n');
+		printf("Enter an integer (q to quit): \n");
 	}
-	printf("Hope you enjoyed this power trip -- bye!\n");
+	printf("Done.\n");
 
 	while (true);
 	return 0;
 }
 
-double power(double n, int p)
+void to_base_n(unsigned long n,int base)
 {
-	int i;
-	double xpow = 1;
+	int r;
 
-	if (n == 0 && p != 0)
-		return 0;
-	if (p == 0)
-		return 1;
+	r = n % base;
+	if (n >= base)
+		to_base_n(n / base, base);
+		//to_base_n(n,m);
+	putchar('0' + r);
 
-
-	else if (p > 0)
-	{
-		for (i = 0; i < p; i++)
-			xpow *= n;
-		return xpow;
-	}
-	else
-	{
-		xpow = power(n,-p);
-		return 1 / xpow;
-	}
+	return;
 }
