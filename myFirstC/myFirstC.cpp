@@ -32,6 +32,7 @@ int main(void)
 		printf(" Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct ");
 		printf(" Nov  Dec\n");
 
+
 		for (month = 0; month < MONTHS; month++)
 		{               /* for each month, sum rainfall over years */
 			for (year = 0, subtot = 0; year < YRS; year++)
