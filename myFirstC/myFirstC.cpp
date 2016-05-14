@@ -2,47 +2,41 @@
 //
 
 #include <stdio.h>
-#define MONTHS 12    /* number of months in a year */
-#define YRS   5      /* number of years of data    */
+void copy_arr(double[], double[], int);
+void copy_ptr(double *, double *, int);
 
 int main(void)
 {
-		/* initializing rainfall data for 1990 - 1994 */
-		const float rain[YRS][MONTHS] = {
-			{ 10.2, 8.1, 6.8, 4.2, 2.1, 1.8, 0.2, 0.3, 1.1, 2.3, 6.1, 7.4 },
-			{ 9.2, 9.8, 4.4, 3.3, 2.2, 0.8, 0.4, 0.0, 0.6, 1.7, 4.3, 5.2 },
-			{ 6.6, 5.5, 3.8, 2.8, 1.6, 0.2, 0.0, 0.0, 0.0, 1.3, 2.6, 4.2 },
-			{ 4.3, 4.3, 4.3, 3.0, 2.0, 1.0, 0.2, 0.2, 0.4, 2.4, 3.5, 6.6 },
-			{ 8.5, 8.2, 1.2, 1.6, 2.4, 0.0, 5.2, 0.9, 0.3, 0.9, 1.4, 7.2 }
-		};
-		int year, month;
-		float subtot, total;
+	double source[5] = { 1.1, 2.2, 3.3, 4.4, 5.5 };
+	double target1[5];
+	double target2[5];
 
-		printf(" YEAR    RAINFALL  (inches)\n");
-		for (year = 0, total = 0; year < YRS; year++)
-		{             /* for each year, sum rainfall for each month */
-			for (month = 0, subtot = 0; month < MONTHS; month++)
-				subtot += *(*(rain + year) + month);
-				//subtot += rain[year][month];
-			printf("%5d %15.1f\n", 1990 + year, subtot);
-			total += subtot;                  /* total for all years */
-		}
-		printf("\nThe yearly average is %.1f inches.\n\n", total / YRS);
-		printf("MONTHLY AVERAGES:\n\n");
-		printf(" Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct ");
-		printf(" Nov  Dec\n");
-
-
-		for (month = 0; month < MONTHS; month++)
-		{               /* for each month, sum rainfall over years */
-			for (year = 0, subtot = 0; year < YRS; year++)
-				subtot += *(*(rain + year) + month);
-				//subtot += rain[year][month];
-			printf("%4.1f ", subtot / YRS);
-		}
-		printf("\n");
-
+	copy_arr(source, target1, 5);
+	printf("\n");
+	copy_ptr(source, target2, 5);
 
 	while (true);
 	return 0;
+}
+
+void copy_arr(double ar[], double target[], int n)
+{
+	int i;
+
+	for ( i = 0; i < n; i++)
+	{
+		target[i] = ar[i];
+		printf("%.2lf\t", target[i]);
+	}
+}
+
+void copy_ptr(double *ptr1, double *ptr2, int n)
+{
+	int i;
+
+	for ( i = 0; i < n; i++)
+	{
+		*(ptr2 + i) = *(ptr1 + i);
+		printf("%.2lf\t", *(ptr2 + i));
+	}
 }
