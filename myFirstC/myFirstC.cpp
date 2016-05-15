@@ -1,5 +1,5 @@
 #include <stdio.h>
-int show(int, double[]);
+double show(int, double[]);
 
 int main(void)
 {
@@ -10,29 +10,28 @@ int main(void)
 	{
 		printf("%.1lf\t", array[i]);
 	}
-	printf("\nThe index of array's max number is %d.\n", show(5, array));
+	printf("\nThe substract of max and min is %.1lf.\n", show(5, array));
 
 	while (true);
 	return 0;
 }
 
-int show(int n, double ar[])
+double show(int n, double ar[])
 {
 	int i;
-	int max_ct;
 	double max;
+	double min;
 
-	max_ct = 0;
 	max = ar[0];
+	min = ar[0];
 
 	for ( i = 0; i < n; i++)
 	{
 		if (max < ar[i])
-		{
 			max = ar[i];
-			max_ct = i;
-		}
+		if (min > ar[i])
+			min = ar[i];
 	}
-	return max_ct;
+	return max - min;
 }
 
