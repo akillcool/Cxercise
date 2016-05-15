@@ -1,25 +1,48 @@
 #include <stdio.h>
-void copy_ptr(double *, double *, int);
-
+void show(int[][5], int);
+void dou(int[][5], int);
 
 int main(void)
 {
-	double source[7] = { 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7 };
-	double target[3];
+	int source[3][5] = {
+		{1, 2, 3, 4, 5},
+		{6, 7, 8, 9, 0},
+		{3, 4, 5, 6, 7},
+	};
 
-	copy_ptr(source, target, 5);
+	show(source, 3);
+	printf("\n");
+	dou(source, 3);
+	show(source, 3);
+
 
 	while (true);
 	return 0;
 }
 
-void copy_ptr(double *ptr1, double *ptr2, int n)
+void show(int ar[][5], int rows)
 {
-	int i;
+	int i, j;
 
-	for ( i = 2; i < n; i++)
+	for ( i = 0; i < rows; i++)
 	{
-		*(ptr2 + i) = *(ptr1 + i);
-		printf("%.1lf\t", *(ptr2 + i));
+		for ( j = 0; j < 5; j++)
+		{
+			printf("%d\t", ar[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void dou(int ar[][5], int rows)
+{
+	int i, j;
+
+	for ( i = 0; i < rows; i++)
+	{
+		for ( j = 0; j < 5; j++)
+		{
+			ar[i][j] *= 2;
+		}
 	}
 }
