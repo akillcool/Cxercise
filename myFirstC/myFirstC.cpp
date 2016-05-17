@@ -1,42 +1,41 @@
-/* Programming Exercise 11-1 */
 #include <stdio.h>
 #include <ctype.h>
-#define LEN 10
-char * getnchar(char * str, int n);
+char *read(char *str);
+
 int main(void)
 {
-	char input[LEN];
-	char *chk;
+	char ch;
+	char target[81];
 
-	chk = getnchar(input, LEN - 1);
-	if (chk == NULL)
-		puts("Input failed.");
-	else
-		puts(input);
+	if(read(target) != NULL)
+		puts(target);
+	ch = getchar();
+	puts("TEST");
+	putchar(ch);
 	puts("Done.\n");
-
 	while (true);
 	return 0;
 }
 
-char * getnchar(char * str, int n)
+char *read(char *str)
 {
-	int i;
-	int ch;
+	int i = 0;
+	char ch;
 
-	for (i = 0; i < n; i++)
+	while ((ch = getchar()) != EOF && !isspace(ch))
 	{
-		ch = getchar();
-		if (ch != EOF && !isspace(ch))
-			str[i] = ch;
-		else
-			break;
+		str[i] = ch;
+		i++;
 	}
+	str[i] = '\0';
 	if (ch == EOF)
 		return NULL;
 	else
 	{
-		str[i] = '\0';
+		while (ch != '\n')
+			ch = getchar();
 		return str;
 	}
+
+	return str;
 }
