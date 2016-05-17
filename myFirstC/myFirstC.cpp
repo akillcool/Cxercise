@@ -1,14 +1,42 @@
-//ÃüÁîĞĞ²ÎÊı
+/* Programming Exercise 11-1 */
 #include <stdio.h>
-
-int main(int argc, char *argv[])
+#include <ctype.h>
+#define LEN 10
+char * getnchar(char * str, int n);
+int main(void)
 {
-	int count;
+	char input[LEN];
+	char *chk;
 
-	printf("The command line has %d arguments: \n", argc - 1);
-	for ( count = 1; count < argc; count++)
+	chk = getnchar(input, LEN - 1);
+	if (chk == NULL)
+		puts("Input failed.");
+	else
+		puts(input);
+	puts("Done.\n");
+
+	while (true);
+	return 0;
+}
+
+char * getnchar(char * str, int n)
+{
+	int i;
+	int ch;
+
+	for (i = 0; i < n; i++)
 	{
-		printf("%d: %s\n", count, argv[count]);
+		ch = getchar();
+		if (ch != EOF && !isspace(ch))
+			str[i] = ch;
+		else
+			break;
 	}
-	printf("\n");
+	if (ch == EOF)
+		return NULL;
+	else
+	{
+		str[i] = '\0';
+		return str;
+	}
 }
