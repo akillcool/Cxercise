@@ -1,33 +1,42 @@
-//PE 11-5 no loop
+/* Programming Exercise 11-7 */
 #include <stdio.h>
-#include <stdbool.h>
-
-bool is_within(char ch, const char *str);
-
+#define LEN 20
+char * string_in(const char * s1, const char * s2);
 int main(void)
 {
-	char str[81];
-	char ch;
+	char orig[LEN] = "transportation";
+	char * find;
 
-	printf("Please input a string: \n");
-	gets_s(str);
-	printf("Please input a char: \n");
-	ch = getchar();
-	if (is_within(ch, str))
-		printf("The char is in the string.\n");
+	puts(orig);
+	find = string_in(orig, "port");
+	if (find)
+		puts(find);
 	else
-		printf("The char is not in the string.\n");
+		puts("Not found");
+	find = string_in(orig, "part");
+	if (find)
+		puts(find);
+	else
+		puts("Not found");
 
 	while (true);
 	return 0;
 }
 
-bool is_within(char ch, const char *str)
+#include <string.h>
+char * string_in(const char * s1, const char * s2)
 {
-	for (int i = 0; i < 81; i++)
-	{
-		if (ch == str[i])
-			return true;
-	}
-	return false;
+	int l2 = strlen(s2);
+	int tries;            /* maximum number of comparisons    */
+	int nomatch = 1;    /* set to 0 if match is found        */
+
+	tries = strlen(s1) + 1 - l2;
+	if (tries > 0)
+		while ((nomatch = strncmp(s1, s2, l2)) && tries--)
+			s1++;
+	if (nomatch)
+		return NULL;
+	else
+		return (char *)s1;  /* cast const away */
 }
+
