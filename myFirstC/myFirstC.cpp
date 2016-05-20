@@ -1,41 +1,35 @@
 #include <stdio.h>
-#include <ctype.h>
-char *read(char *str);
+char *show_addr(char *str1, char ch);
 
 int main(void)
 {
+	char source[21] = {"Minecraft"};
 	char ch;
-	char target[81];
+	char *addr;
 
-	if(read(target) != NULL)
-		puts(target);
-	ch = getchar();
-	puts("TEST");
-	putchar(ch);
-	puts("Done.\n");
+	while ((ch = getchar()) != EOF)
+	{
+		if (ch == '\n')
+			continue;
+		addr = show_addr(source, ch);
+		if (addr != NULL)
+		{
+			printf("The same char is %c and it's address is %p\n", *addr, addr);
+		}
+		else
+			printf("Same char not found.\n");
+	}
+
 	while (true);
 	return 0;
 }
 
-char *read(char *str)
+char *show_addr(char *str1, char ch)
 {
-	int i = 0;
-	char ch;
-
-	while ((ch = getchar()) != EOF && !isspace(ch))
+	for (int i = 0; i < 21; i++)
 	{
-		str[i] = ch;
-		i++;
+		if (ch == str1[i])
+			return &str1[i];
 	}
-	str[i] = '\0';
-	if (ch == EOF)
-		return NULL;
-	else
-	{
-		while (ch != '\n')
-			ch = getchar();
-		return str;
-	}
-
-	return str;
+	return NULL;
 }
