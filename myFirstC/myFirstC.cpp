@@ -1,42 +1,32 @@
-/* Programming Exercise 11-7 */
 #include <stdio.h>
-#define LEN 20
-char * string_in(const char * s1, const char * s2);
+void reverse(char *p);
 int main(void)
 {
-	char orig[LEN] = "transportation";
-	char * find;
-
-	puts(orig);
-	find = string_in(orig, "port");
-	if (find)
-		puts(find);
-	else
-		puts("Not found");
-	find = string_in(orig, "part");
-	if (find)
-		puts(find);
-	else
-		puts("Not found");
-
-	while (true);
+	char str[81];
+	do
+	{
+		puts("input a string:");
+		gets_s(str);
+		reverse(str);
+		puts(str);
+		puts("input any char except q to go on.");
+		gets_s(str);
+	} while (*str != 'q');
+	puts("Quit.");
 	return 0;
 }
 
-#include <string.h>
-char * string_in(const char * s1, const char * s2)
+void reverse(char *p)
 {
-	int l2 = strlen(s2);
-	int tries;            /* maximum number of comparisons    */
-	int nomatch = 1;    /* set to 0 if match is found        */
-
-	tries = strlen(s1) + 1 - l2;
-	if (tries > 0)
-		while ((nomatch = strncmp(s1, s2, l2)) && tries--)
-			s1++;
-	if (nomatch)
-		return NULL;
-	else
-		return (char *)s1;  /* cast const away */
+	int i, n;
+	char temp;
+	for (n = 0; *(p + n) != '\0'; n++) 
+		continue;
+	n--;
+	for (i = 0; i < n - i; i++)
+	{
+		temp = p[i];
+		p[i] = p[n - i];
+		p[n - i] = temp;
+	}
 }
-
