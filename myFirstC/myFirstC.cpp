@@ -1,35 +1,33 @@
+//PE 11-5 no loop
 #include <stdio.h>
-char *show_addr(char *str1, char ch);
+#include <stdbool.h>
+
+bool is_within(char ch, const char *str);
 
 int main(void)
 {
-	char source[21] = {"Minecraft"};
+	char str[81];
 	char ch;
-	char *addr;
 
-	while ((ch = getchar()) != EOF)
-	{
-		if (ch == '\n')
-			continue;
-		addr = show_addr(source, ch);
-		if (addr != NULL)
-		{
-			printf("The same char is %c and it's address is %p\n", *addr, addr);
-		}
-		else
-			printf("Same char not found.\n");
-	}
+	printf("Please input a string: \n");
+	gets_s(str);
+	printf("Please input a char: \n");
+	ch = getchar();
+	if (is_within(ch, str))
+		printf("The char is in the string.\n");
+	else
+		printf("The char is not in the string.\n");
 
 	while (true);
 	return 0;
 }
 
-char *show_addr(char *str1, char ch)
+bool is_within(char ch, const char *str)
 {
-	for (int i = 0; i < 21; i++)
+	for (int i = 0; i < 81; i++)
 	{
-		if (ch == str1[i])
-			return &str1[i];
+		if (ch == str[i])
+			return true;
 	}
-	return NULL;
+	return false;
 }
