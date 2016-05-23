@@ -1,123 +1,41 @@
+/* pe11-11.c -- counts words and certain characters */
+/* Programming Exercise 11-11                       */
 #include <stdio.h>
-#include <string.h>
-
-void show_src(char **p, int n);
-void show_ascii(char **p, int n);
-void show_length(char **p, int n);
-void show_word(char **p, int n);
-
+#include <ctype.h>       // for isspace()  
+#include <stdbool.h>     // for bool, true, false          
 int main(void)
 {
-	char str[10][81];
-	char *p[10];
-	int ct = 0;
-	int selection;
+	char c;               // read in character 
+	int low_ct = 0;       // number of lowercase characters     
+	int up_ct = 0;        // number of uppercase characters     
+	int dig_ct = 0;       // number of digits          
+	int n_words = 0;      // number of words 
+	int punc_ct = 0;      // number of punctuation marks        
+	bool inword = false;  // == true if c is in a word  
 
-	while (ct != 10)
+	printf("Enter text to be analyzed (EOF to terminate):\n");
+	while ((c = getchar()) != EOF)
 	{
-		printf("Please input string %d, use Ctrl+Z to quit: \n", ct + 1);
-		if (gets_s(str[ct]) != NULL)
-			p[ct] = str[ct];
-		else
-			break;
-		ct++;
-	}
-	puts("Make selection from follows.");
-	puts("1.print				2.print in ASCII sequence");
-	puts("3.print in length		4.print in first word's sequence");
-	puts("5.quit");
-	while ((scanf_s("%d", &selection)) == 1 && selection > 0 && selection < 6)
-	{
-		switch (selection)
+		if (islower(c))
+			low_ct++;
+		else if (isupper(c))
+			up_ct++;
+		else if (isdigit(c))
+			dig_ct++;
+		else if (ispunct(c))
+			punc_ct++;
+		if (!isspace(c) && !inword)
 		{
-		case 1:show_src(p, ct);
-			break;
-		case 2:show_ascii(p, ct);
-			break;
-		case 3:show_length(p, ct);
-			break;
-		case 4:show_word(p, ct);
-			break;
-		case 5:return 0;
+			inword = true;  // starting a new word 
+			n_words++;      // count word          
 		}
+		if (isspace(c) && inword)
+			inword = false; // reached end of word
 	}
+	printf("\nwords = %d, lowercase = %d, uppercase = %d, "
+		"digits = %d, punctuation = %d\n",
+		n_words, low_ct, up_ct, dig_ct, punc_ct);
 
 	while (true);
 	return 0;
-}
-
-void show_src(char **p, int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		puts(p[i]);
-	}
-}
-
-void show_ascii(char **p, int n)
-{
-	char *temp;
-
-	for (int top = 0; top < n - 1; top++)
-	{
-		for (int seek = top + 1; seek < n; seek++)
-		{
-			if (strcmp(p[top], p[seek]) > 0)
-			{
-				temp = p[top];
-				p[top] = p[seek];
-				p[seek] = temp;
-			}
-		}
-	}
-	show_src(p, n);
-}
-
-void show_length(char **p, int n)
-{
-	char *temp;
-
-	for (int top = 0; top < n - 1; top++)
-	{
-		for (int seek = top + 1; seek < n; seek++)
-		{
-			if (strlen(p[top]) > strlen(p[seek]))
-			{
-				temp = p[top];
-				p[top] = p[seek];
-				p[seek] = temp;
-			}
-		}
-	}
-	show_src(p, n);
-}
-
-void show_word(char **p, int n)
-{
-	char *temp;
-	char *pos1, *pos2;
-
-	for (int top = 0; top < n - 1; top++)
-	{
-		for (int seek = top + 1; seek < n; seek++)
-		{
-			pos1 = p[top];
-			while (*pos1 != ' ' && *pos1 != '\0')
-			{
-				pos1++;
-			}
-			pos2 = p[seek];
-			while (*pos2 != ' ' && *pos2 != '\0')
-			{
-				pos2++;
-			}
-			if (pos1 - p[top] > pos2 - p[seek])
-			{
-				temp = p[top];
-				p[top] = p[seek];
-				p[seek] = temp;
-			}
-		}
-	}
-	show_src(p, n);
 }
