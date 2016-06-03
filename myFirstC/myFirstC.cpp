@@ -1,44 +1,53 @@
-//PE 11-14 myatof
-#include<stdio.h>
-#include<stdlib.h>
-#include<ctype.h>
-double myatof(char *p);
+/* Programming Exercise 11-15 */
+#include <stdio.h>
+#include <ctype.h>
+#include <stdbool.h>
+/* #include <console.h> */   /* Macintosh adjustment */
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	char a[30] = { 0 };
-	while (a[0] != 'q')
+	char mode = 'p';
+	bool ok = true;
+	int ch;
+
+	/*argc = ccommand(&argv); */  /* Macintosh adjustment */
+
+	if (argc > 2)
 	{
-		puts("input adouble without +-e:");
-		gets_s(a);
-		printf("atof: %.5lf\n", atof(a));
-		printf("myatof: %.5lf\n", myatof(a));
-		printf("difference:%.5lf\n", atof(a) - myatof(a));
-		puts("input anycharexcept q to go on.");
-		gets_s(a);
+		printf("Usage: %s [-p | -u | -l]\n", argv[0]);
+		ok = false;                /* skip processing input */
 	}
-	puts("Quit.");
-	return 0;
-}
-double myatof(char *p)//将字符串转换为浮点型，暂时只限小数点格式（如： 342.678）
-{
-	double n = 0;
-	int i = -1;
-	while (1)
+	else if (argc == 2)
 	{
-		if (isdigit(*p)) //如果是数字
+		if (argv[1][0] != '-')
 		{
-			n = n * 10 + (*p) - '0';
-			if (i != -1) 
-				i++; //小数位数 i计数
+			printf("Usage: %s [-p | -u | -l]\n", argv[0]);
+			ok = false;
 		}
-		else if (*p == '.' && i == -1) //如果是第一个小数点
-			i = 0; //开启小数位数 i计数
 		else
-			break;
-		p++;
+			switch (argv[1][1])
+			{
+			case 'p':
+			case 'u':
+			case 'l': mode = argv[1][1];
+				break;
+			default: printf("%s is an invalid flag; ", argv[1]);
+				printf("using default flag (-p).\n");
+			}
 	}
-	for (; i>0; i--) //根据小数位数i，将 n取为原来的(10^i)分之一
-		n /= 10; 
-	return n;
+
+	if (ok)
+		while ((ch = getchar()) != EOF)
+		{
+			switch (mode)
+			{
+			case 'p':  putchar(ch);
+				break;
+			case 'u':  putchar(toupper(ch));
+				break;
+			case 'l':  putchar(tolower(ch));
+			}
+		}
+
+	return 0;
 }
