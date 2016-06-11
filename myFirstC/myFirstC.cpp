@@ -1,53 +1,33 @@
-/* Programming Exercise 11-15 */
+//parta.cpp
 #include <stdio.h>
-#include <ctype.h>
-#include <stdbool.h>
-/* #include <console.h> */   /* Macintosh adjustment */
 
-int main(int argc, char *argv[])
+void report_count();
+void accumulate(int k);
+
+int count = 0;
+
+int main(void)
 {
-	char mode = 'p';
-	bool ok = true;
-	int ch;
+	int value;		//自动变量
+	register int i;		//寄存器变量
 
-	/*argc = ccommand(&argv); */  /* Macintosh adjustment */
-
-	if (argc > 2)
+	printf("Enter a positive integer (0 to quit):");
+	while (scanf_s("%d", &value) == 1 && value > 0)
 	{
-		printf("Usage: %s [-p | -u | -l]\n", argv[0]);
-		ok = false;                /* skip processing input */
-	}
-	else if (argc == 2)
-	{
-		if (argv[1][0] != '-')
+		++count;		//使用文件作用域变量
+		for ( i = value; i >= 0; i--)
 		{
-			printf("Usage: %s [-p | -u | -l]\n", argv[0]);
-			ok = false;
+			accumulate(i);
 		}
-		else
-			switch (argv[1][1])
-			{
-			case 'p':
-			case 'u':
-			case 'l': mode = argv[1][1];
-				break;
-			default: printf("%s is an invalid flag; ", argv[1]);
-				printf("using default flag (-p).\n");
-			}
+		printf("Enter a positive integer (0 to quit):");
 	}
+	report_count();
 
-	if (ok)
-		while ((ch = getchar()) != EOF)
-		{
-			switch (mode)
-			{
-			case 'p':  putchar(ch);
-				break;
-			case 'u':  putchar(toupper(ch));
-				break;
-			case 'l':  putchar(tolower(ch));
-			}
-		}
-
+	while (true);
 	return 0;
+}
+
+void report_count()
+{
+	printf("Loop executed %d times\n", count);
 }
