@@ -29,10 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="r_drive0.cpp">
+    <ClCompile Include="r_drive1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="rand0.cpp">
+    <ClCompile Include="s_and_r.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
