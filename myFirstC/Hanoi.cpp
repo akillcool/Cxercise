@@ -1,31 +1,32 @@
-//Tower of Hanoi
+//count.c 使用标准IO
 #include <stdio.h>
-void Hanoi(int n, char a, char b, char c);
+#include <stdlib.h>
 
-static int count = 0;
-
-int main(void)
+int main(int argc, char *argv[])
 {
-	int n;
-	printf("请输入要移动的块数：");
-	scanf_s("%d", &n);
-	Hanoi(n, 'a', 'b', 'c');
-	printf("%d\n", count);
+	int ch;
+	FILE *fp;
+	long count = 0;
+
+	if (argc != 2)
+	{
+		printf("usage: %s filename\n", argv[0]);
+		exit(1);
+	}
+	if ((fp = fopen(argv[1], "r")) == NULL)
+	{
+		printf("Can't open %s", argv[1]);
+		exit(1);
+	}
+	while ((ch = getc(fp)) != EOF)
+	{
+		putc(ch, stdout);
+		count++;
+	}
+	fclose(fp);
+	printf("File %s has %ld characters\n", argv[1], count);
+
 	return 0;
 }
 
-void Hanoi(int n, char a, char b, char c)
-{
-	if (n == 1)
-	{
-		printf("\t%c->%c\n", a, c);    //当n只有1个的时候直接从a移动到c
-		++count;
-	}
-	else
-	{
-		Hanoi(n - 1, a, c, b);		//第n-1个要从a通过c移动到b
-		printf("\t%c->%c\n", a, c);
-		++count;
-		Hanoi(n - 1, b, a, c);		//n-1个移动过来之后b变开始盘，b通过a移动到c
-	}
-}
+
