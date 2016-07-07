@@ -1,54 +1,37 @@
-//reducto.c 压缩文本
+//reverse.c - 反序显示一个文件
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#define CNTL_Z '\032'
+#define SLEN 50
 
-#define LEN 40
-
-int main(int argc, char *argv[])
+int main(void)
 {
-	FILE *in, *out;
-	int ch;
-	char name[LEN];
-	int count = 0;
+	char file[SLEN];
+	char ch;
+	FILE *fp;
+	long count, last;
 
-	//检查命令行参数
-	if (argc < 2)
+	puts("Enter the name of the file to be processed: ");
+	gets_s(file);
+	if ((fp = fopen(file, "rb")) == NULL)	//只读和二进制模式
 	{
-		fprintf(stderr, "Usage: %s filename.\n", argv[0]);
+		printf("Can't open %s\n", file);
 		exit(1);
 	}
-
-	//实现输入
-	if ((in = fopen(argv[1], "r")) == NULL)
+	fseek(fp, 0L, SEEK_END);
+	last = ftell(fp);
+	for (count = 1L; count <= last; count++)
 	{
-		fprintf(stderr, "I couldn't open the file \"%s\"", argv[1]);
-		exit(2);
-	}
-
-	//实现输出
-	strcpy(name, argv[1]);
-	strcat(name, ".red");
-	if ((out = fopen(name, "w")) == NULL)
-	{
-		fprintf(stderr, "Can't creat output file.");
-		exit(3);
-	}
-
-	//复制数据
-	while ((ch = getc(in)) != EOF)
-	{
-		if (count++ % 3 == 0)
+		fseek(fp, -count, SEEK_END);
+		ch = getc(fp);
+		if (ch != CNTL_Z && ch != '\r')
 		{
-			putc(ch, out);
+			putchar(ch);
 		}
 	}
+	putchar('\n');
+	fclose(fp);
 
-	//关闭文件
-	if (fclose(in)!=0||fclose(out)!=0)
-	{
-		fprintf(stderr, "Error in closing files.");
-	}
 	return 0;
 }
 
