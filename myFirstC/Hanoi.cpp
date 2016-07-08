@@ -1,53 +1,38 @@
-//randombin.c 随机存取，二进制IO
+//13.10.4
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ARSIZE 1000
-
-int main(void)
+int main(int argc, char *argv[])
 {
-	double numbers[ARSIZE];
-	double value;
-	const char *file = "numbers.dat";
-	int i;
-	long pos;
-	FILE *iofile;
+	FILE *fp;
+	int count = 0;
+	double num;
+	double total = 0;
 
-	//创建一组double类型的值
-	for (i = 0; i < ARSIZE; i++)
+	if (argc == 1)
 	{
-		numbers[i] = 100.0*i + 1.0 / (i + 1);
+		fp = stdin;
 	}
-	//尝试打开文件
-	if ((iofile = fopen(file, "wb")) == NULL)
+	else if (argc == 2)
 	{
-		fprintf(stderr, "Couldn't open %s for output.\n", file);
-		exit(1);
+		if ((fp = fopen(argv[1], "r")) == NULL)
+		{
+			fprintf(stderr, "Failed to open %s.\n", argv[1]);
+			exit(EXIT_FAILURE);
+		}
 	}
-	//把数组中的数据以二进制写进文件中
-	fwrite(numbers, sizeof(double), ARSIZE, iofile);
-	fclose(iofile);
-
-	if ((iofile = fopen(file, "rb")) == NULL)
+	else
 	{
-		fprintf(stderr, "Couldn't open %s for random access.\n", file);
-		exit(1);
+		fprintf(stderr, "Usage: %s filename",argv[0]);
+		exit(EXIT_FAILURE);
 	}
-
-	//从文件中读取所选项目
-	printf("Enter the index in the range 0-%d.\n", ARSIZE - 1);
-	scanf("%d", &i);
-	while (i >= 0 && i < ARSIZE)
+	printf("Now input numbers: (q to quit)\n");
+	while ((fscanf(fp,"%lf", &num)) == 1)
 	{
-		pos = (long)i * sizeof(double);		//计算偏移量
-		fseek(iofile, pos, SEEK_SET);		//定位
-		fread(&value, sizeof(double), 1, iofile);
-		printf("The value there is %f.\n", value);
-		printf("Next index(out of range to quit.)\n");
-		scanf("%d", &i);
+		total += num;
+		count++;
 	}
-	fclose(iofile);
-	puts("Bye!");
+	printf("The average number of your input is %.2f.\n", total / count);
 
 	return 0;
 }
